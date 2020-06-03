@@ -7,7 +7,7 @@ project="cilium-ci"
 # this is only needs to be set as some of gcloud commands requires it,
 # but as this script uses resource URIs clusters in all locations are
 # going to be discovered and used
-region="us-west2"
+region="us-west1"
 
 set -e
 
@@ -30,7 +30,7 @@ while [ $locked -ne 0 ]; do
     kubectl annotate deployment lock lock=1
     locked=$?
     echo $locked
-    if [ -n "${BUILD_URL+x}" ] ; then
+    if [ -n "${BUILD_URL+x}" && $locked -eq 0 ] ; then
       kubectl annotate deployment lock --overwrite "jenkins-build-url=${BUILD_URL}"
     fi
     set -e
